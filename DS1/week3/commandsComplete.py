@@ -76,10 +76,17 @@ df['Citable docs per Capita'].corr(df['Energy Supply per Capita'])
 # for all countries in the top 15, and a 0 if the country's % Renewable value is below the median.
 # This function should return a series named HighRenew whose index is 
 # the country name sorted in ascending order of rank.
+df.sort_values(['Rank'],ascending=True, inplace=True)
 medianRenew = df[['% Renewable']].median(axis=0).values[0]
 df['Median Renew'] = np.where(df['% Renewable'] >= medianRenew, 1, 0)
-qq = df['Rank'].max(axis=1).sort_values(ascending=False)
 
+# Use the following dictionary to group the Countries by Continent, 
+# then create a dateframe that displays the sample size (the number of countries in each 
+# continent bin), and the sum, mean, and std deviation for the estimated population 
+# of each country.
+#This function should return a DataFrame with index named Continent 
+# ['Asia', 'Australia', 'Europe', 'North America', 'South America'] 
+# and columns ['size', 'sum', 'mean', 'std']
 
 ContinentDict  = {'China':'Asia', 
                   'United States':'North America', 
@@ -97,3 +104,17 @@ ContinentDict  = {'China':'Asia',
                   'Australia':'Australia', 
                   'Brazil':'South America'}
 df['Continent'] = pd.Series(ContinentDict)
+df['Population Estimate'] = df['Energy Supply']/df['Energy Supply per Capita']
+qq = df.groupby('Continent')['Population Estimate'].agg({'size':np.size,'min':min,'median':np.median,'max':max})
+
+# Cut % Renewable into 5 bins. Group Top15 by the Continent, 
+# as well as these new % Renewable bins. How many countries are in each of these groups?
+# This function should return a Series with a MultiIndex of Continent, 
+# then the bins for % Renewable. Do not include groups with no countries.
+
+df['Renewable Bins'] = pd.cut(df['% Renewable'],5)
+qq = df.groupby(['Continent','Renewable Bins'])['Continent'].agg(len)
+
+# Convert the Population Estimate series to a string with thousands separator 
+# (using commas). Do not round the results
+df['Population Estimate'] = df['Population Estimate'].apply(lambda x: "{:,}".format(x))
