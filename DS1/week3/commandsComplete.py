@@ -51,15 +51,15 @@ avgGDPCountry = df[['2006', '2007', '2008', '2009', '2010', '2011', '2012', '201
 df.get_value(avgGDPCountry,'2015') - df.get_value(avgGDPCountry,'2006')
 
 #What is the mean Energy Supply per Capita?
-meanESpC = df[['Energy Supply per Capita']].mean(axis=0).values[0]
+meanESpC = df[['Energy Supply per Capita']].mean(axis=0)
 
 #What country has the maximum % Renewable and what is the percentage?
-list(zip(df[['% Renewable']].idxmax(axis=0),df[['% Renewable']].max(axis=0)))
+list(zip(df[['% Renewable']].idxmax(axis=0),df[['% Renewable']].max(axis=0)))[0]
 
 # Create a new column that is the ratio of Self-Citations to Total Citations. 
 # What is the maximum value for this new column, and what country has the highest ratio?
 df['Citations Ratio'] = df['Self-citations']/df['Citations']
-list(zip(df[['Citations Ratio']].idxmax(axis=0),df[['Citations Ratio']].max(axis=0)))
+list(zip(df[['Citations Ratio']].idxmax(axis=0),df[['Citations Ratio']].max(axis=0)))[0]
 
 # Create a column that estimates the population using Energy Supply and Energy Supply per capita. 
 # What is the third most populous country according to this estimate?
