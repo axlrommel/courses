@@ -62,20 +62,72 @@ def get_list_of_university_towns():
 def get_recession_start():
     # '''Returns the year and quarter of the recession start time as a 
     # string value in a format such as 2005q3'''
-    
-    return "ANSWER"
+    gdp_df = pd.read_excel('gdplev.xls', skiprows = [6,7], parse_cols = "E,G", header = 5)
+    gdp = gdp_df.iloc[212:] #read from row 212 onward
+
+    prevGDP = 0
+    gdpDecreasing = False
+    quarterDepStarted = ""
+    label = 'GDP in billions of chained 2009 dollars'
+    for index, row in gdp.iterrows():
+        if row[label] < prevGDP and gdpDecreasing == False:
+            quarterDepStarted = index
+            gdpDecreasing = True
+        elif row[label] < prevGDP and gdpDecreasing == True:
+            break
+        else:
+            gdpDecreasing = False
+        prevGDP = row[label]
+
+    return quarterDepStarted
 
 def get_recession_end():
     # '''Returns the year and quarter of the recession end time as a 
     # string value in a format such as 2005q3'''
        
-    return "ANSWER"
+    import pandas as pd
+    gdp_df = pd.read_excel('gdplev.xls', skiprows = [6,7], parse_cols = "E,G", header = 5)
+    gdp = gdp_df.iloc[212:] #read from row 212 onward
+
+    prevGDP = 0
+    gdpIncreasing = False
+    quarterDepEnded = ""
+    label = 'GDP in billions of chained 2009 dollars'
+    for index, row in gdp.iterrows():
+        if index[:4] < '2009':
+            continue
+        elif row[label] > prevGDP and gdpIncreasing == False: 
+            gdpIncreasing = True
+        elif row[label] > prevGDP and gdpIncreasing == True:
+            quarterDepEnded = index
+            break
+        else:
+            gdpIncreasing = False
+        prevGDP = row[label]
+
+    return quarterDepEnded
 
 def get_recession_bottom():
     # '''Returns the year and quarter of the recession bottom time as a 
     # string value in a format such as 2005q3'''
-    
-    return "ANSWER"
+    gdp_df = pd.read_excel('gdplev.xls', skiprows = [6,7], parse_cols = "E,G", header = 5)
+    gdp = gdp_df.iloc[212:] #read from row 212 onward
+
+    prevGDP = 100000
+    previndex = ""
+    quarterDepBottom = ""
+    label = 'GDP in billions of chained 2009 dollars'
+    for index, row in gdp.iterrows():
+        if index[:4] < '2009':
+            continue
+        elif row[label] > prevGDP:
+            quarterDepBottom = previndex
+            break
+        prevGDP = row[label]
+        previndex = index
+
+    return quarterDepBottom
+
 
 def convert_housing_data_to_quarters():
     # '''Converts the housing data to quarters and returns it as mean 
