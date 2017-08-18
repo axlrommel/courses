@@ -170,6 +170,13 @@ def run_ttest():
     # return whether the alternative hypothesis (that the two groups are the same)
     # is true or not as well as the p-value of the confidence. 
     
+   df['Price Ratio'] = df[recession_start].div(df[recession_bottom])
+
+# the trick is to convert the 2 d list to a list of tuples before passing it to loc , using the tuple list you can find both uni and non-uni
+    tuple_list = #convert ul to a list of tuples i.e [(State1,RegionName1),(State2,RegionName2),.....,(State517,RegionName517)]
+    university_towns = hdf.loc[tuple_list]
+    non_university_towns = hdf.loc[~hdf.index.isin(tuple_list)]
+
     # Return the tuple (different, p, better) where different=True if the t-test is
     # True at a p<0.01 (we reject the null hypothesis), or different=False if 
     # otherwise (we cannot reject the null hypothesis). The variable p should

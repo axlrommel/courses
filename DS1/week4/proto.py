@@ -17,9 +17,36 @@ for i in range(2000, 2017):
 
 columns_to_keep.pop(len(columns_to_keep)-1) #remove 2016q4
 houseP.set_index(['State','RegionName'],inplace=True)
-df = houseP[columns_to_keep]
-print(df.loc["Texas"].loc["Austin"].loc["2010q3"])
-#print(df.tail)
+hdf = houseP[columns_to_keep]
+
+hdf['Price Ratio'] = hdf['2008q3'].div(hdf['2009q2'])
+
+elements = []
+state = ""
+region = ""
+editStr = "[edit]"
+parens = " ("
+with open('university_towns.txt','r') as input:
+    for line in input:
+        editpos = line.find(editStr)
+        parenspos = line.find(parens)
+        if editpos > 0:
+            state = line[:editpos]
+        else :
+            if parenspos > 0 :
+                region = line[:parenspos]
+            else :
+                region = line.strip()
+            elements.append([state,region])
+
+university_towns = hdf.loc[hdf.index.isin(elements)]
+non_university_towns = hdf.loc[~hdf.index.isin(elements)]
+print(len(university_towns))
+print(len(non_university_towns))
+print(university_towns.index.values)
+
+
+
 
 
 
