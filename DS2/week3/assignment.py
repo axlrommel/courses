@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import math
 from matplotlib.pyplot import *
+import matplotlib.pyplot as plt
 
 # by using the random.seed(), we get repeatable results
 np.random.seed(12345)
@@ -25,12 +26,17 @@ data = df3['mean']
 error = df3['95_conf']
 
 width = 0.5
+threshold = 38000
+fig = plt.figure()
+ax = fig.add_subplot(1,1,1)
 xlocations = np.array(range(len(data)))+width
-bar(xlocations, data, yerr=error, width=width, error_kw=dict(lw=1, capsize=10, capthick=1))
-xticks(xlocations, labels)
-xlim(0, xlocations[-1]+width*2)
-title("Average Ratings on the Training Set")
-gca().get_xaxis().tick_bottom()
-gca().get_yaxis().tick_left()
-
-show()
+barlist = ax.bar(xlocations, data, yerr=error, width=width, error_kw=dict(lw=1, capsize=10, capthick=1))
+barlist[0].set_color('r')
+ax.set_xticks(xlocations)
+ax.set_xticklabels(labels)
+ax.set_xlim(0, xlocations[-1]+width*2)
+plt.title("Average Ratings on the Training Set")
+ax.plot([0., 4.5], [threshold, threshold], "k--")
+plt.gca().get_xaxis().tick_bottom()
+plt.gca().get_yaxis().tick_left()
+plt.show()
