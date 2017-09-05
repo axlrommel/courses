@@ -1,0 +1,50 @@
+Easiest option: Implement the bar coloring as described above - 
+a color scale with only three colors, (e.g. blue, white, and red). 
+Assume the user provides the y axis value of interest as a parameter or variable.
+Harder option: Implement the bar coloring as described in the paper, 
+where the color of the bar is actually based on the amount of data covered 
+(e.g. a gradient ranging from dark blue for the distribution being certainly 
+below this y-axis, to white if the value is certainly contained, to dark red 
+if the value is certainly not contained as the distribution is above the axis)
+
+calculate mean m and margin of error yerr for each of the rows in the data frame
+PS. yerr =the margin of error
+
+where margin of error = standard error* C (C is a constant determined by the 95% (Critical value or T-value of 95% of a normal distribution) i.e.abs(qnorm( (1-.95)/2 percentile)), for a normal distribution C is approximately 1.96
+
+and the standard error of the sampling distribution is std_sample/sqrt(Number of samples)
+
+2. plot a bar chart using m and ci, the chart should look like the Figure 1 from (Ferreira et al, 2014) 
+shown in the assignment description
+
+3. plot a horizontal line Y
+
+4. based on the value of y (this can be inputed through the update function of the 
+animation or manually) set the colour of each of the columns in the bar chart, 
+this can be done using an if or switch statement
+
+5. when y is changed, the horizontal line needs to be redrawn and the colours of 
+the bars need to be changes based on the new value of y. 
+(changing a bar colour was introduced in the lecture)
+
+in the easiest option the value of y can be hard coded, given step 4 is 
+implemented. the colour of any bar will be
+
+red if y<bar_height i.e. mean
+white or green with low alpha if y ==bar_height
+blue if y> bar_height
+
+
+Calculate your margin of error. You can find the margin of error by using the following 
+formula: Za/2 * σ/√(n). Za/2 = the confidence coefficient, where a = confidence level, 
+σ = standard deviation, and n = sample size. This is another way of saying that you 
+should multiply the critical value by the standard error. Here's how you can solve 
+this formula by breaking it into parts:
+To find the critical value, or Za/2: Here, the confidence level is 95%. Convert the 
+percentage to a decimal, .95, and divide it by 2 to get .475. Then, check out the z 
+table to find the corresponding value that goes with .475. You'll see that the closest 
+value is 1.96, at the intersection of row 1.9 and the column of .06.
+To find the standard error, take the standard deviation, 30, and divide it by the 
+square root of the sample size, 1,000. You get 30/31.6, or .95 lbs.
+Multiply 1.96 by .95 (your critical value by your standard error) to get 1.86, your 
+margin of error.
