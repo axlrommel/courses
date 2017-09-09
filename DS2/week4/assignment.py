@@ -71,39 +71,52 @@ font = {'family': 'serif',
         'size': 9,
         }
 
-fig, axes = plt.subplots(nrows=2, ncols=2)
-fig.text(3,3,'Overall Poverty in Missouri vs. \nUnemployment Rates')
+fontaxis = {'family': 'serif',
+        'color':  'green',
+        'weight': 'normal',
+        'size': 9,
+        }
 
-l1, = axes[0,0].plot(MOMerge.index, MOMerge['unemployment rate'],label = 'unemployment rate')
-l2, = axes[0,0].plot(MOMerge.index, MOMerge['Total'],label = 'total poverty')
-# l1.set_label('unemployment rate')
+ax = plt.subplot(2, 2, 1)
 
-l3 = axes[0,1].plot(MOMerge.index, MOMerge['unemployment rate'],label = 'unemployment rate')
-l4 = axes[0,1].plot(MOMerge.index, MOMerge['Male'],label = 'Male')
-l5 = axes[0,1].plot(MOMerge.index, MOMerge['Female'],label = 'Female')
+ax.plot(MOMerge.index, MOMerge['unemployment rate'],label = 'Unemployment Rate')
+ax.plot(MOMerge.index, MOMerge['Total'],label = 'Poverty Overall')
+ax.set_ylabel('%',fontaxis)
+ax.set_title('Overall Poverty',font)
+ax.set_yticks([6,8,10,12,14,16])
+ax.tick_params(labelbottom='off') #remove tick labels
+plt.legend(loc = 'best',fontsize=7)
 
-l6 = axes[1,0].plot(MOMerge.index, MOMerge['unemployment rate'],label = 'unemployment rate')
-l7 = axes[1,0].plot(MOMerge.index, MOMerge['Race White'],label = 'Race White')
-l8 = axes[1,0].plot(MOMerge.index, MOMerge['Race Black'],label = 'Race Black')
-l9 = axes[1,0].plot(MOMerge.index, MOMerge['Hispanic'],label = 'Hispanic')
+ax = plt.subplot(2, 2, 2)
+ax.plot(MOMerge.index, MOMerge['unemployment rate'],label = 'Unemployment Rate')
+ax.plot(MOMerge.index, MOMerge['Male'],label = 'Male Poverty')
+ax.plot(MOMerge.index, MOMerge['Female'],label = 'Female Poverty')
+ax.set_title('Poverty by Sex',font)
+ax.set_yticks([6,9,12,15])
+ax.tick_params(labelbottom='off')
+plt.legend(loc = 'best',fontsize=7)
 
-l10 = axes[1,1].plot(MOMerge.index, MOMerge['unemployment rate'],label = 'unemployment rate')
-l11 = axes[1,1].plot(MOMerge.index, MOMerge['Less than HighSchool'],label = 'Less than HighSchool')
-l12 = axes[1,1].plot(MOMerge.index, MOMerge['High School Grad'],label = 'High School Grad')
-l13 = axes[1,1].plot(MOMerge.index, MOMerge['Some College'],label = 'Some College')
-l14 = axes[1,1].plot(MOMerge.index, MOMerge['College grad'],label = 'College grad')
+ax = plt.subplot(2, 2, 3)
+ax.plot(MOMerge.index, MOMerge['unemployment rate'],label = 'Unemployment Rate')
+ax.plot(MOMerge.index, MOMerge['Race White'],label = 'White Poverty')
+ax.plot(MOMerge.index, MOMerge['Race Black'],label = 'Black Poverty')
+ax.plot(MOMerge.index, MOMerge['Hispanic'],label = 'Hispanic Poverty')
+ax.set_ylabel('%',fontaxis)
+ax.set_xlabel('Year',fontaxis)
+ax.set_title('Poverty by Race',font)
+ax.set_yticks([5,10,15,20,25,30])
+plt.legend(loc = 'center',fontsize=7,bbox_to_anchor=(0.5,0.6))
 
-axes[0,0].set_ylabel('%',font)
-axes[1,0].set_ylabel('%',font)
-axes[1,0].set_xlabel('Year',font)
-axes[1,1].set_xlabel('Year',font)
-axes[0,0].set_title('Overall Poverty',font)
-axes[0,1].set_title('By Sex',font)
-axes[1,0].set_title('By Race',font)
-axes[1,1].set_title('By Education level',font)
-axes[0,0].set_yticks([6,8,10,12,14,16])
-axes[0,1].set_yticks([6,9,12,15])
-axes[1,0].set_yticks([5,10,15,20,25,30])
-axes[1,1].set_yticks([5,10,15,20,25])
-plt.setp([a.get_xticklabels() for a in axes[0, :]], visible=False)
+ax = plt.subplot(2, 2, 4)
+ax.plot(MOMerge.index, MOMerge['unemployment rate'],label = 'Unemployment Rate')
+ax.plot(MOMerge.index, MOMerge['Less than HighSchool'],label = 'Did not graduate from HS')
+ax.plot(MOMerge.index, MOMerge['High School Grad'],label = 'High School Grad')
+ax.plot(MOMerge.index, MOMerge['Some College'],label = 'Some College')
+ax.plot(MOMerge.index, MOMerge['College grad'],label = 'College Grad')
+ax.set_xlabel('Year',fontaxis)
+ax.set_title('Poverty by Education Level',font)
+ax.set_yticks([5,10,15,20,25])
+plt.legend(loc = 'center',fontsize=7,bbox_to_anchor=(0.8,0.68))
+
+plt.suptitle("Unemployment Rate vs. Poverty Level in Missouri (2012-2015)")
 plt.show()
