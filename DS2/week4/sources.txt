@@ -2,3 +2,4 @@ https://factfinder.census.gov/bkmk/table/1.0/en/ACS/15_5YR/S1701/0400000US29
 https://factfinder.census.gov/bkmk/table/1.0/en/ACS/14_5YR/S1701/0400000US29
 https://factfinder.census.gov/bkmk/table/1.0/en/ACS/13_5YR/S1701/0400000US29
 https://factfinder.census.gov/bkmk/table/1.0/en/ACS/12_5YR/S1701/0400000US29
+https://data.bls.gov/timeseries/LASST290000000000003?amp%253bdata_tool=XGtable&output_view=data&include_graphs=true
