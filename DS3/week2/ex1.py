@@ -13,25 +13,35 @@ y = np.sin(x)+x/6 + np.random.randn(n)/10
 
 X_train, X_test, y_train, y_test = train_test_split(x.reshape(-1, 1), y, random_state=0)
 linreg = LinearRegression().fit(X_train, y_train)
+
 degreeOne = list(map(lambda x: x * linreg.coef_[0] + linreg.intercept_,np.linspace(0,10,100) ))
 
 X_F1_poly = PolynomialFeatures(degree=3).fit_transform(x.reshape(-1, 1))
 X_train1, X_test1, y_train1, y_test1 = train_test_split(X_F1_poly, y, random_state = 0)
 linreg = LinearRegression().fit(X_train1, y_train1)
-degreeThree = list(map(lambda x: x * linreg.coef_[1] + x*x*linreg.coef_[2] + x*x*x*linreg.coef_[3] + linreg.intercept_,
+degreeThree = list(map(lambda x: x * linreg.coef_[1] + x**2*linreg.coef_[2] + x**3*linreg.coef_[3] + linreg.intercept_,
     np.linspace(0,10,100) ))
 
 X_F1_poly = PolynomialFeatures(degree=6).fit_transform(x.reshape(-1, 1))
 X_train2, X_test2, y_train2, y_test2 = train_test_split(X_F1_poly, y, random_state = 0)
 linreg = LinearRegression().fit(X_train2, y_train2)
-degreeSix = list(map(lambda x: x * linreg.coef_[1] + x*x*linreg.coef_[2] + x*x*x*linreg.coef_[3] + 
-    + x*x*x*x*linreg.coef_[4]  + x*x*x*x*x*linreg.coef_[5] + x*x*x*x*x*x*linreg.coef_[6] + linreg.intercept_,
+degreeSix = list(map(lambda x: x * linreg.coef_[1] + x**2*linreg.coef_[2] + x**3*linreg.coef_[3] +
+    x**4*linreg.coef_[4]  + x**5*linreg.coef_[5] + x**6*linreg.coef_[6] + linreg.intercept_,
+    np.linspace(0,10,100) ))
+
+X_F1_poly = PolynomialFeatures(degree=9).fit_transform(x.reshape(-1, 1))
+X_train3, X_test3, y_train3, y_test3 = train_test_split(X_F1_poly, y, random_state = 0)
+linreg = LinearRegression().fit(X_train3, y_train3)
+degreeNine = list(map(lambda x: x * linreg.coef_[1] + x**2*linreg.coef_[2] + x**3*linreg.coef_[3] +
+    x**4*linreg.coef_[4]  + x**5*linreg.coef_[5] + x**6*linreg.coef_[6] + 
+    x**7*linreg.coef_[7]  + x**8*linreg.coef_[8] + x**9*linreg.coef_[9] + linreg.intercept_,
     np.linspace(0,10,100) ))
 
 plt.figure(figsize=(10,5))
 plt.plot(X_train, y_train, 'o', label='training data', markersize=10)
 plt.plot(X_test, y_test, 'o', label='test data', markersize=10)
 #for i,degree in enumerate([1]):
+plt.plot(np.linspace(0,10,100), np.array(degreeNine), alpha=0.8, lw=2, label='degree={}'.format("9"))
 plt.plot(np.linspace(0,10,100), np.array(degreeSix), alpha=0.8, lw=2, label='degree={}'.format("6"))
 plt.plot(np.linspace(0,10,100), np.array(degreeThree), alpha=0.8, lw=2, label='degree={}'.format("3"))
 plt.plot(np.linspace(0,10,100), np.array(degreeOne), alpha=0.8, lw=2, label='degree={}'.format("1"))
