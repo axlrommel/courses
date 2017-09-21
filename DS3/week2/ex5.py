@@ -25,15 +25,7 @@ y_mush = mush_df2.iloc[:,1]
 X_train2, X_test2, y_train2, y_test2 = train_test_split(X_mush, y_mush, random_state=0)
 clf = DecisionTreeClassifier().fit(X_train2, y_train2)
 
-importance = pd.DataFrame(data = clf.feature_importances_)
-importance = importance.T
+importance = pd.DataFrame(data = np.transpose(clf.feature_importances_)).T
 importance.columns = X_train2.columns
-qq = importance.T
-rr = qq.sort_values(0, ascending = False)
-print(rr.head())
-tt = rr.index.values
-print(tt[0:5])
-# retval = []
-# for i in range(0, 5):
-#     retval.append(rr.index[i])
-# print(retval)
+print(importance.T.sort_values(0, ascending = False).index.values[0:5])
+
