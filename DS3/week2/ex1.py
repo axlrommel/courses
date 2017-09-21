@@ -1,7 +1,17 @@
+# ### Question 1
+# 
+# Write a function that fits a polynomial LinearRegression model on the *training data* `X_train` for degrees 1, 3, 6, and 9. (Use PolynomialFeatures in sklearn.preprocessing to create the polynomial features and then fit a linear regression model) For each model, find 100 predicted values over the interval x = 0 to 10 (e.g. `np.linspace(0,10,100)`) and store this in a numpy array. The first row of this array should correspond to the output from the model trained on degree 1, the second row degree 3, the third row degree 6, and the fourth row degree 9.
+# 
+# <img src="polynomialreg1.png" style="width: 1000px;"/>
+# 
+# The figure above shows the fitted models plotted on top of the original data (using `plot_one()`).
+# 
+# <br>
+# *This function should return a numpy array with shape `(4, 100)`*
+
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 import numpy as np
-import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 import matplotlib.pyplot as plt
