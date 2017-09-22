@@ -16,11 +16,20 @@
 # y_score_lr = lr.fit(X_train, y_train).decision_function(X_test)
 # fpr_lr, tpr_lr, _ = roc_curve(y_test, y_score_lr)
 # roc_auc_lr = auc(fpr_lr, tpr_lr)
-
+import numpy as np
+import pandas as pd
 from sklearn.metrics import roc_curve, auc
+from sklearn.model_selection import train_test_split
 
-def answer_five():
+df = pd.read_csv('fraud_data.csv')
+
+X = df.iloc[:,:-1]
+y = df.iloc[:,-1]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
+
+# def answer_five():
         
-    # Your code here
+#     # Your code here
     
-    return # Return your answer
+#     return # Return your answer

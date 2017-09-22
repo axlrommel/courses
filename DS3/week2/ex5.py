@@ -23,9 +23,11 @@ X_mush = mush_df2.iloc[:,2:]
 y_mush = mush_df2.iloc[:,1]
 
 X_train2, X_test2, y_train2, y_test2 = train_test_split(X_mush, y_mush, random_state=0)
-clf = DecisionTreeClassifier().fit(X_train2, y_train2)
-
+clf = DecisionTreeClassifier(random_state=0).fit(X_train2, y_train2)
+print(clf.feature_importances_)
 importance = pd.DataFrame(data = np.transpose(clf.feature_importances_)).T
+print(importance.head())
+print(X_train2.columns)
 importance.columns = X_train2.columns
 print(importance.T.sort_values(0, ascending = False).index.values[0:5])
 

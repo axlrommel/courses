@@ -25,10 +25,12 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 
 classifier = SVC(gamma=1e-07,C=1e9)
 svc_fit = classifier.fit(X_train, y_train)
-y_predicted = svc_fit.predict(X_test)
+y_predicted = svc_fit.decision_function(X_test)
+
+y_t = list(map(lambda x: 1 if x > -220 else 0 ,y_predicted))
 
 print("Classification report for classifier %s:\n%s\n" %
-      (classifier, metrics.classification_report(y_test, y_predicted)))
-print ("Confusion matrix:\n%s" % metrics.confusion_matrix(y_test, y_predicted))
+      (classifier, metrics.classification_report(y_test, y_t)))
+print ("Confusion matrix:\n%s" % metrics.confusion_matrix(y_test, y_t))
 
 # return metrics.confusion_matrix(y_test, y_predicted)
