@@ -37,11 +37,8 @@
 
 # def answer_six():    
 from sklearn.model_selection import GridSearchCV
-from sklearn.svm import LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC
-import numpy as np
 import pandas as pd
 
 df = pd.read_csv('fraud_data.csv')
@@ -51,25 +48,14 @@ y = df.iloc[:,-1]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 
-# classifier1 = LogisticRegression(penalty='l1')
-# classifier2 = LogisticRegression(penalty='l2')
 classifier = LogisticRegression()
 grid_values = {'C':[0.01, 0.1, 1, 10, 100], 'penalty':['l1','l2']}
 clf = GridSearchCV(classifier, cv=3,param_grid=grid_values)
 qq = clf.fit(X_train, y_train)
-print(qq.cv_results_)
-tt =qq.cv_results_['mean_test_score']
-print(tt)
-# clf2 = GridSearchCV(classifier2, cv=3,param_grid=grid_values)
-# qq2 = clf2.fit(X_train, y_train)
-# tt1 = qq2.cv_results_['mean_test_score']
 
-qq1 = [[tt[0],tt[1]],[tt[2],tt[3]],[tt[4],tt[5]],[tt[6],tt[7]],[tt[8],tt[9]]]
-# print(qq1)
-    # Your code here
-    
-    # return # Return your answer
+print(qq.cv_results_['mean_test_score'].reshape(5,2))
 
+# return(qq.cv_results_['mean_test_score'].reshape(5,2))
 
 # Use the following function to help visualize results from the grid search
 # def GridSearch_Heatmap(scores):
