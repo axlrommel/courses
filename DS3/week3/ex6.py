@@ -50,7 +50,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 
 classifier = LogisticRegression()
 grid_values = {'C':[0.01, 0.1, 1, 10, 100], 'penalty':['l1','l2']}
-clf = GridSearchCV(classifier, cv=3,param_grid=grid_values)
+clf = GridSearchCV(classifier, cv=3,param_grid=grid_values, scoring='recall')
 qq = clf.fit(X_train, y_train)
 
 print(qq.cv_results_['mean_test_score'].reshape(5,2))
