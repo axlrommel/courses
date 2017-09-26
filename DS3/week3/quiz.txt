@@ -1,0 +1,68 @@
+1:
+let the probability of heads result in an unfair coin toss be 10%. If the classifier tried just to guess the result based in the probability(i.e. the majority class) e.i. if we had 100 samples which are tails, the classifier is likely to predict 90 to be tails correctly, this is simply because the likelihood of getting tails is the majority. The base accuracy in this case will be samples predicted correctly/samples =90% and you will expect any classifier to achieve an accuracy of at least 90%
+
+FYI don't submit the percentage submit the accuracy. For example .5 instead of 50%. I spent a while trying to figure out what i was doing wrong.
+
+2:
+
+Make sure you're labelling the entries correctly
+
+staring for a while at the figure below may help
+
+| 96 | 4 |
+
+| 8 | 19 |
+
+
+
+the first column is straight forward, the second, remember F(F) =T and F(T) =F
+
+Ignore the explanation if you like and just look at the labelling of each cell
+
+finally make sure you enter the result as #.###
+
+5:
+
+Using the fitted model `m` create a precision-recall curve to answer the following question:
+
+For the fitted model `m`, approximately what precision can we expect for a recall of 0.8?
+
+
+Sophie GreeneTeaching Staff · 7 days ago
+Hi,
+
+Again all the variables you need like m, X_test and y_test are already instantiated, you can use the print statement to explore
+
+
+you'll only need to click the run button. as the question indicates you can plot the precision recall curve and then use the graph to locate the value of precision when recall is .8
+
+11:
+ first narrow down to measures that have a proportional relationship with TP, then decide between these based on the formula of each relationship and based on that this question is connected to the previous one Q10
+
+
+13, 14:
+
+Q13 uses 'recall' as the scoring criterion in grid_search while Q14 uses 'precision' as the scoring criterion in grid_search
+Q13 computes recall_score-precision_score while Q14 computes precision_score-recall_score
+
+grid_values = {'gamma': [0.01, 0.1, 1, 10],'C': [0.01, 0.1, 1, 10]}
+
+I think I am missing something about the differences between question 13 and 14 on the quiz. My approach is the same for both questions, except for 14 I perform GridSearchCV with precision scoring and I compute precision minus recall instead of recall minus precision. I get the correct answer for #13, but not #14 though..
+
+here are my steps:
+set gamma and C grids to the values given in the questions
+perform gridsearchCV, with precision scoring
+run the fit method of the model on the training data
+run the predict method on test data
+compute precision_score minus recall_score. Use 3 decimals places!!
+
+So, you have your gamma and your C, found by the GridSearchCV, which optimizes precision in Q13 and recall in Q14.
+
+Now, all you need is to plug in obtained values in new classifier, fit it, find y_predicted and count precision_score(y_test, y_predicted). You can use best_estimator_ attribute. Please read http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
+
+grid_values = {...}
+grid_search = run_grid search with model m and scoring ='recall' and fit on X_train y_train
+y_pred = run grid_search best_estimator's predict on X_test
+recall = run recall_score on y_test, y_pred
+precision = run precision_score on y_test, y_pred
+result =  recall-precisoin
