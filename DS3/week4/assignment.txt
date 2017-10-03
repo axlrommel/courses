@@ -1,0 +1,7 @@
+0.774629784258 with only two numerical features and a grid search for learning_rate and n_estimators parameters of GradientBoostingClassifier.
+
+I got an ROC AUC of 0.7795 using only the numerical features in the dataset, dropping all the entries from X_train where y_train was NaN and using a GradientBoostingClassifier with n_estimators=200 and learning_rate=0.01.
+
+I got to these values by just iterating through some configurations, but another way would be to use a grid search to find the optimal params. This seems a bit too easy...
+
+Random Forest with 7 Features ('agency_name', 'inspector_name', 'judgment_amount', 'violation_code', 'disposition', 'lat', 'lon') can achieve AUC of 0.76954821003, which is the full points.
