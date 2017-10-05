@@ -5,3 +5,21 @@ I got an ROC AUC of 0.7795 using only the numerical features in the dataset, dro
 I got to these values by just iterating through some configurations, but another way would be to use a grid search to find the optimal params. This seems a bit too easy...
 
 Random Forest with 7 Features ('agency_name', 'inspector_name', 'judgment_amount', 'violation_code', 'disposition', 'lat', 'lon') can achieve AUC of 0.76954821003, which is the full points.
+
+['disposition','judgment_amount']
+Nearest Neighbors 0.919414560921 0.656403705261
+
+['disposition','judgment_amount','fine_amount']
+Naive Bayes 0.875231423568 0.714523547123
+
+['disposition','judgment_amount','fine_amount','agency_name']
+Naive Bayes 0.874405804353 0.708818152932
+
+['disposition','judgment_amount','fine_amount','admin_fee']
+Naive Bayes 0.876632474356 0.712409410254
+
+['disposition','judgment_amount','fine_amount','late_fee']
+Naive Bayes 0.876957718289 0.712744122014
+
+['disposition','judgment_amount','fine_amount','late_fee','admin_fee]
+Naive Bayes 0.876282211659 0.710945373877
