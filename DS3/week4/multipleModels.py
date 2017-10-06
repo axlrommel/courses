@@ -1,11 +1,23 @@
 import pandas as pd
 import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.svm import SVC
+from sklearn.metrics import roc_auc_score
+from sklearn.dummy import DummyClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import GridSearchCV
+from sklearn.linear_model import LogisticRegression
 
 qq2 = pd.read_csv('addresses.csv')
 qq3 = pd.read_csv('latlons.csv')
-qq3['lat'] = qq3['lat'].fillna(42.390126).astype(float)
-qq3['lon'] = qq3['lon'].fillna(-89.930867).astype(float)
 
 df_add = qq2.merge(qq3,how='inner',on='address')
 
@@ -21,7 +33,7 @@ train = temp.dropna(axis=0, how='any')
 qq1 = pd.read_csv('test.csv')
 qq1['zip_code'] = qq1['zip_code'].apply(lambda x: str(x)[:5])
 qqb = qq1.merge(df_add,how='inner', on='ticket_id')
-columns_to_keep_pred = ['ticket_id','agency_name', 'inspector_name', 'judgment_amount', 
+columns_to_keep_pred = ['agency_name', 'inspector_name', 'judgment_amount', 
     'violation_code', 'disposition','fine_amount','admin_fee','state_fee',
     'late_fee','discount_amount','clean_up_cost','zip_code','lat','lon']
 predict = qqb[columns_to_keep_pred]
@@ -80,27 +92,48 @@ if 'zip_code' in columns_for_training:
     train = train[train.zip_code.apply(lambda x: x.isnumeric())]
     predict = predict[predict.zip_code.apply(lambda x: x.isnumeric())]
 
-columns_for_test = columns_for_training[:]
-columns_for_test.append('ticket_id')
-X_test = predict[columns_for_test]
-X_test = X_test.set_index(['ticket_id'])
 
-X_train = train[columns_for_training]
-y_train = train['compliance']
+X = train[columns_for_training]
+y = train['compliance']
+
+X_train, X_test, y_train, y_test = train_test_split( X, y, random_state = 0)
 
 
-clf = GradientBoostingClassifier(criterion='friedman_mse', init=None,
-              learning_rate=0.1, loss='deviance', max_depth=3,
-              max_features=None, max_leaf_nodes=None,
-              min_samples_leaf=1,
-              min_samples_split=2, min_weight_fraction_leaf=0.0,
-              n_estimators=200, presort='auto', random_state=0,
-              subsample=1.0, verbose=0, warm_start=False)
+names = [
+     "DummyClassifier-stratified", "DummyClassifer-most frequent",
+     "Nearest Neighbors 3","Nearest Neighbors 4","Nearest Neighbors 5","Nearest Neighbors 6","SVC",
+          "Decision Tree", "Random Forest", 
+         "Neural Net"
+          , "AdaBoost"
+          ,"Naive Bayes"
+         ,"Gradient Boosting"
+         ]
 
-results = pd.Series()
-clf.fit(X_train, y_train)
-for index, row in X_test.iterrows():
-    pr = clf.predict_proba([row])[:, 1]
-    results.set_value(index,pr[0])
+classifiers = [
+    DummyClassifier(random_state=0),
+    DummyClassifier(strategy="most_frequent", random_state=0),
+    KNeighborsClassifier(3),
+    KNeighborsClassifier(4),
+    KNeighborsClassifier(5),
+    KNeighborsClassifier(6),
+    SVC(),
+    DecisionTreeClassifier(max_depth=2,random_state=0),
+    RandomForestClassifier(max_depth=2, n_estimators=10, max_features='auto',random_state=0),
+    MLPClassifier(shuffle=False, activation="logistic", random_state=0,alpha=0.01),
+    AdaBoostClassifier(random_state=0),
+    GaussianNB(priors=None),
+    GradientBoostingClassifier(n_estimators=200, random_state=0,learning_rate=0.01)
+    ]
 
-print (results.describe())
+
+for name, clf in zip(names, classifiers):
+        clf.fit(X_train, y_train)
+        score = clf.score(X_test, y_test)
+        if hasattr(clf, "predict_proba"):
+            prob_pos = clf.predict_proba(X_test)[:, 1]
+        else:  # use decision function
+            prob_pos = clf.decision_function(X_test)
+            prob_pos = (prob_pos - prob_pos.min()) / (prob_pos.max() - prob_pos.min())
+        print(name, score, roc_auc_score(y_test, prob_pos))
+
+
