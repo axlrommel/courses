@@ -9,15 +9,18 @@ df['Base sales tax']=df['Base sales tax'].apply(lambda x: str(x)[:-1]).apply(pd.
 df['Total with max local surtax']=df['Total with max local surtax'].apply(lambda x: str(x)[:-1]).apply(pd.to_numeric)
 
 #find the state or territory with the highest Base sales tax
-df['Base sales tax'].idxmax()
+df.loc[df['Base sales tax'].idxmax()]['State/territory/district']
 
 # find the state or territory with the highest Total with max local surtax
 df.loc[df['Total with max local surtax'].idxmax()]
 
-# return a series of state or territory with a zero percent base sales tax
-df.loc[df['Base sales tax'] == 0]
+# return a numpy array of states and territories with a zero percent base sales tax
+pd.Series(df.loc[df['Base sales tax'] == 0]['State/territory/district']).values
 
-# return a series of state or territory with a zero percent base sales tax and a non zero percent for 'Total with max local surtax'
-zeroST = df['Base sales tax'] == 0
-nonZeroMLS = df['Total with max local surtax'] > 0
-df[zeroST & nonZeroMLS]
+# which state or territory has the lowest non-zero percent base sales tax
+#tip: create a temporary dataframe and remove from it the rows with a zero percent base sales tax
+# and then get the state or territory with the lowest tax
+data = df
+mask = data['Base sales tax']== 0 #should return an array of true/false
+dq = data[~mask] # remove the falses
+dq.loc[dq['Base sales tax'].idxmin()]['State/territory/district']
