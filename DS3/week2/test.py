@@ -19,8 +19,8 @@ X_train, X_test, y_train, y_test = train_test_split(pca, y, random_state=0)
 
 
 plt.figure(dpi=120)
-plt.scatter(pca[y.values==0,0], pca[y.values==0,1], alpha=0.5, label='Edible', s=2)
-plt.scatter(pca[y.values==1,0], pca[y.values==1,1], alpha=0.5, label='Poisonous', s=2)
+plt.scatter(pca[y.values==0,0], pca[y.values==0,1], alpha=0.5, label='Edible', s=4, c = 'r')
+plt.scatter(pca[y.values==1,0], pca[y.values==1,1], alpha=0.5, label='Poisonous', s=4, c = 'y')
 plt.legend()
 plt.title('Mushroom Data Set\nFirst Two Principal Components')
 plt.xlabel('PC1')
